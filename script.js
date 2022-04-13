@@ -11,7 +11,7 @@ var Project3 = (function () {
                 "scheduletypid": null,
                 "start": null,
                 "end": null,
-                "days": null,
+                "days": [],
                 "beginmm": null,
                 "beginhh": null,
                 "endhh": null,
@@ -52,20 +52,48 @@ var Project3 = (function () {
                         //add number selects to hours and minutes
                         $("#begin_hh").append("<option value = default> ");
                         for (var i = 1; i < 13; i++) {
-                                $("#begin_hh").append("<option value = " + i + ">" + i);
+                                if (i < 10) {
+
+                                        $("#begin_hh").append("<option value = 0" + i + ">" + i);
+                                }
+                                else {
+                                        $("#begin_hh").append("<option value = " + i + ">" + i);
+
+                                }
                         }
                         $("#begin_mm").append("<option value = default> ");
                         for (var i = 0; i < 60; i += 15) {
-                                $("#begin_mm").append("<option value = " + i + ">" + i);
+                                if (i < 10) {
+
+                                        $("#begin_mm").append("<option value = 0" + i + ">" + i);
+                                }
+                                else {
+                                        $("#begin_mm").append("<option value = " + i + ">" + i);
+
+                                }
                         }
 
                         $("#end_hh").append("<option value = default> ");
                         for (var i = 1; i < 13; i++) {
-                                $("#end_hh").append("<option value = " + i + ">" + i);
+                                if (i < 10) {
+
+                                        $("#end_hh").append("<option value = 0" + i + ">" + i);
+                                }
+                                else {
+                                        $("#end_hh").append("<option value = " + i + ">" + i);
+
+                                }
                         }
                         $("#end_mm").append("<option value = default> ");
                         for (var i = 0; i < 60; i += 15) {
-                                $("#end_mm").append("<option value = " + i + ">" + i);
+                                if (i < 10) {
+
+                                        $("#end_mm").append("<option value = 0" + i + ">" + i);
+                                }
+                                else {
+                                        $("#end_mm").append("<option value = " + i + ">" + i);
+
+                                }
                         }
                 },
 
@@ -83,6 +111,8 @@ var Project3 = (function () {
                                 $("#scheduletypeid").append("<option value=" + jsonscheduleTypes[0][i] + ">" + jsonscheduleTypes[1][i]);
                         }
                 },
+
+
                 fail: function () {
 
                 },
@@ -116,6 +146,38 @@ var Project3 = (function () {
                                 userinput.endhh = Number(userinput.endhh) + Number(12);
                         }
 
+                        //make start and end string
+                        userinput.start = userinput.beginhh + ":" + userinput.beginmm + ":00";
+                        userinput.end = userinput.endhh + ":" + userinput.endmm + ":00";
+
+                        //days
+                        var daysselected = false;
+                        var days = [];
+                        if ($("#sel_mwf")[0].checked) {
+                                days.push("MWF");
+                                if (!daysselected) {
+                                        daysselected = true;
+                                }
+                        }
+                        if ($("#sel_tr")[0].checked) {
+                                days.push("TR");
+                                if (!daysselected) {
+                                        daysselected = true;
+                                }
+                        }
+                        if ($("#sel_any")[0].checked) {
+                                days = ["ANY"];
+                                if (!daysselected) {
+                                        daysselected = true;
+                                }
+                        }
+
+
+                        if (!daysselected) {
+                                days.push("ANY");
+                        }
+
+                        userinput.days = days;
 
                         //diagnostic print
                         for (const key in userinput) {
@@ -123,9 +185,20 @@ var Project3 = (function () {
                                 console.log(`${key}: ${userinput[key]}`);
                         }
 
+                        //validate
+                        if (userinput.subjectid != null) {
+                                this.sendRequest();
+                        }
+                        else {
+                                alert("You must select a subject");
+                        }
+
                 },
 
+                sendRequest: function () {
+                        console.log("requesting sent");
 
+                },
                 //reset the page
                 reset: function () {
                         let confirmAction = confirm("Would you like to reset your selections?");
