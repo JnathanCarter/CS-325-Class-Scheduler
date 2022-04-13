@@ -40,7 +40,7 @@
                 <table name="courseinfotable" id="courseinfotable">
                         <tr>
                                 <td>Course Number</td>
-                                <td><input type="text" name="number" id="number"></td>
+                                <td><input type="number" name="number" id="number"></td>
                         </tr>
                         <tr>
                                 <td>Title:</td>
@@ -104,52 +104,25 @@
                         </tr>
                         <tr>
                                 <td class="pllabel">Days: </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="m" id="sel_day_mon_id">
-                                        <label for="sel_day_mon_id"><span class="fieldlabeltextinvisible">Days:
-                                                        Monday</span></label>
-                                        <abbr title="Monday">Mon</abbr>
+                                <td width="11%">
+                                        <input type="checkbox" name="sel_day" value="mwf" id="sel_day_mwf_id">
+
+
+                                        <abbr title="MWF">MWF</abbr>
                                 </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="t" id="sel_day_tue_id">
-                                        <label for="sel_day_tue_id"><span
-                                                        class="fieldlabeltextinvisible">Tuesday</span></label>
-                                        <abbr title="Tuesday">Tue</abbr>
+                                <td width="11%">
+                                        <input type="checkbox" name="sel_day" value="tr" id="sel_day_tr_id">
+                                        <abbr title="TR">TR</abbr>
                                 </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="w" id="sel_day_wed_id">
-                                        <label for="sel_day_wed_id"><span
-                                                        class="fieldlabeltextinvisible">Wednesday</span></label>
-                                        <abbr title="Wednesday">Wed</abbr>
+                                <td width="11%">
+                                        <input type="checkbox" name="sel_day" value="none" id="sel_day_tr_id">
+                                        <abbr title="None">None</abbr>
                                 </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="r" id="sel_day_thur_id">
-                                        <label for="sel_day_thur_id"><span
-                                                        class="fieldlabeltextinvisible">Thursday</span></label>
-                                        <abbr title="Thursday">Thur</abbr>
-                                </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="f" id="sel_day_fri_id">
-                                        <label for="sel_day_fri_id"><span
-                                                        class="fieldlabeltextinvisible">Friday</span></label>
-                                        <abbr title="Friday">Fri</abbr>
-                                </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="s" id="sel_day_sat_id">
-                                        <label for="sel_day_sat_id"><span
-                                                        class="fieldlabeltextinvisible">Saturday</span></label>
-                                        <abbr title="Saturday">Sat</abbr>
-                                </td>
-                                <td width="11%" class="pldefault">
-                                        <input type="checkbox" name="sel_day" value="u" id="sel_day_sun_id">
-                                        <label for="sel_day_sun_id"><span
-                                                        class="fieldlabeltextinvisible">Sunday</span></label>
-                                        <abbr title="Sunday">Sun</abbr>
-                                </td>
+
                         </tr>
                 </table>
                 <br>
-                <input type="submit" value="Class Search" onclick="Project3.onSubmit();">
+                <input type="button" value="Class Search" onclick="Project3.submitForm();">
                 <input type="reset" value="Reset" onclick="Project3.reset();">
         </form>
         <div id="output"></div>
