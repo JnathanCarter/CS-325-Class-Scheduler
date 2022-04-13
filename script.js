@@ -12,6 +12,10 @@ var Project3 = (function () {
                 "start": null,
                 "end": null,
                 "days": null,
+                "beginmm": null,
+                "beginhh": null,
+                "endhh": null,
+                "endmm": null,
         };
 
 
@@ -97,6 +101,23 @@ var Project3 = (function () {
                         userinput.scheduletypid = $("#scheduletypeid").val().trim();
 
 
+                        userinput.beginmm = $("#begin_mm").val().trim();
+                        userinput.beginhh = $("#begin_hh").val().trim();
+                        //convert to 24 hour time
+                        if ($("#begin_ap").val().trim() == "pm") {
+                                userinput.beginhh = Number(userinput.beginhh) + Number(12);
+                        }
+
+
+                        userinput.endmm = $("#end_mm").val().trim();
+                        userinput.endhh = $("#end_hh").val().trim();
+                        //convert to 24 hour time
+                        if ($("#end_ap").val().trim() == "pm") {
+                                userinput.endhh = Number(userinput.endhh) + Number(12);
+                        }
+
+
+                        //diagnostic print
                         for (const key in userinput) {
 
                                 console.log(`${key}: ${userinput[key]}`);
