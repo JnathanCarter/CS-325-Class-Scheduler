@@ -106,6 +106,7 @@ var Project3 = (function () {
                         }
                 },
                 initSchedule: function () {
+                        $("#scheduletypeid").append("<option value = default>");
                         for (var i = 0; i < jsonscheduleTypes[0].length; i++) {
 
                                 $("#scheduletypeid").append("<option value=" + jsonscheduleTypes[0][i] + ">" + jsonscheduleTypes[1][i]);
@@ -118,9 +119,6 @@ var Project3 = (function () {
                 },
 
                 //output results
-                outputResults: function () {
-
-                },
 
                 //get info from the user and get info from api
                 submitForm: function () {
@@ -179,6 +177,7 @@ var Project3 = (function () {
 
                         userinput.days = days;
 
+
                         //diagnostic print
                         for (const key in userinput) {
 
@@ -187,7 +186,7 @@ var Project3 = (function () {
 
                         //validate
                         if (userinput.subjectid != null) {
-                                this.sendRequest();
+                                this.findChangedValues();
                         }
                         else {
                                 alert("You must select a subject");
@@ -195,10 +194,101 @@ var Project3 = (function () {
 
                 },
 
-                sendRequest: function () {
-                        console.log("requesting sent");
+                findChangedValues: function () {
+                        console.log("requesting sent\n\n\n");
+
+                        var customurl = searchurl;
+                        var isDefaultVal = false;
+                        //count of values that have no been altered by user
+                        var defaultcount = 0;
+
+                        //holds the keys of values in User Input that have changed
+                        var keysOfChangedUserInputValues = [];
+                        //get the keys of all the changed values + num and title
+                        for (const key in userinput) {
+
+                                if (userinput[key] != "default" && userinput[key] != "default:default:00" && userinput[key] != "ANY" && userinput[key] != "") {
+                                        //dianostic print
+                                        console.log("changed value---", key, userinput[key]);
+                                        //add key to changed keys list
+                                        keysOfChangedUserInputValues.push(key);
+
+
+
+
+                                } else {
+                                        defaultcount += 1;
+                                }
+                                //magic constants are bad i know but at this point i just need it to work
+                                //i can refactor when i dont have a due date lol
+                                if (defaultcount == 10) {
+                                        isDefaultVal = true;
+                                }
+                        }
+
+                        //if everything is default then compose this get url
+                        if (isDefaultVal) {
+                                customurl += "subjectid=" + userinput.subjectid;
+
+                                console.log("\ncustomurl---", customurl);
+                        } else {
+
+                        }
+
+                        //diagnostic print
+                        console.log("\n\n\n");
+                        for (const key in keysOfChangedUserInputValues) {
+
+                                console.log(`keys of changed values-- ${key}: ${keysOfChangedUserInputValues[key]}`);
+                        }
+                        this.makeGetRequest(customurl);
+                },
+
+                makeGetRequest: function (customurl) {
+                        var that = this;
+                        console.log("\n\n\nmake get request---\n Request url---v\n" + customurl);
+                        $.ajax({
+                                url: customurl,
+                                method: 'GET',
+                                dataType: 'json',
+                                success: function (response) {
+                                        var temp = response;
+                                        console.log("\nresponse data---" + temp);
+                                        that.outputResults(temp);
+                                }
+
+                        })
 
                 },
+                outputResults: function (data) {
+                        console.log("\noutput reseult data", data);
+                        $("#output").html("<p>Course Found:</p>");
+                        data.forEach(element => {
+                                /*
+                                for (key in element) {
+                                        $("#output").append("<p>" + key + "-----" + element[key] + "</p>");
+                                }
+                                */
+                                $("#output").append("<p>" + element["description"] + " - " + element["crn"] + " - " + element["subjectid"] + " " + element["num"] + " - " + element["section"] + "</p>");
+                                $("#output").append("<p>" + "Course Level:   " + element["level"] + "</p>");
+                                $("#output").append("<p>" + "Credit Hours:   " + element["credits"] + "</p>");
+                                $("#output").append("<p>" + "Term ID:   " + element["termid"] + "</p>");
+                                $("#output").append("<p>" + "Course Level:   " + element["level"] + "</p>");
+                                $("#output").append("<p>" + "Course Type:   " + element["scheduletype"] + "</p>");
+                                $("#output").append("<p>" + "Instructor:   " + element["instructor"] + "</p>");
+                                $("#output").append("<p>" + "Location:   " + element["where"] + "</p>");
+                                $("#output").append("<p>" + "Start Time: " + element["start"] + "  " + "     End Time" + element["end"] + "</p>");
+
+                                $("#output").append("<br>");
+                                $("#output").append("<br>");
+                                $("#output").append("<br>");
+
+
+
+                        });
+
+                },
+
                 //reset the page
                 reset: function () {
                         let confirmAction = confirm("Would you like to reset your selections?");
