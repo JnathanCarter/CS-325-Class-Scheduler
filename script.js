@@ -8,7 +8,7 @@ var Project3 = (function () {
                 "subjectid": null,
                 "num": null,
                 "title": null,
-                "scheduletypid": null,
+                "scheduletypeid": null,
                 "start": null,
                 "end": null,
                 "days": [],
@@ -126,7 +126,7 @@ var Project3 = (function () {
                         userinput.num = $("#number").val().trim();
                         userinput.title = $("#title").val().trim();
 
-                        userinput.scheduletypid = $("#scheduletypeid").val().trim();
+                        userinput.scheduletypeid = $("#scheduletypeid").val().trim();
 
 
                         userinput.beginmm = $("#begin_mm").val().trim();
@@ -147,6 +147,11 @@ var Project3 = (function () {
                         //make start and end string
                         userinput.start = userinput.beginhh + ":" + userinput.beginmm + ":00";
                         userinput.end = userinput.endhh + ":" + userinput.endmm + ":00";
+
+                        delete userinput.beginhh;
+                        delete userinput.beginmm;
+                        delete userinput.endhh;
+                        delete userinput.endmm;
 
                         //days
                         var daysselected = false;
@@ -197,7 +202,7 @@ var Project3 = (function () {
                 findChangedValues: function () {
                         console.log("requesting sent\n\n\n");
 
-                        var customurl = searchurl;
+                        var customurl = null;
                         var isDefaultVal = false;
                         //count of values that have no been altered by user
                         var defaultcount = 0;
@@ -225,13 +230,20 @@ var Project3 = (function () {
                                         isDefaultVal = true;
                                 }
                         }
-
+                        console.log("default is", isDefaultVal);
                         //if everything is default then compose this get url
                         if (isDefaultVal) {
+                                customurl = searchurl;
                                 customurl += "subjectid=" + userinput.subjectid;
 
                                 console.log("\ncustomurl---", customurl);
                         } else {
+                                customurl = searchurl;
+                                for (var i = 0; i < keysOfChangedUserInputValues.length; i++) {
+
+                                        customurl += keysOfChangedUserInputValues[i] + "=" + userinput[keysOfChangedUserInputValues[i]];
+                                        customurl += "&";
+                                }
 
                         }
 
@@ -263,30 +275,36 @@ var Project3 = (function () {
                 outputResults: function (data) {
                         console.log("\noutput reseult data", data);
                         $("#output").html("<p>Course Found:</p>");
-                        data.forEach(element => {
-                                /*
-                                for (key in element) {
-                                        $("#output").append("<p>" + key + "-----" + element[key] + "</p>");
-                                }
-                                */
-                                $("#output").append("<p>" + element["description"] + " - " + element["crn"] + " - " + element["subjectid"] + " " + element["num"] + " - " + element["section"] + "</p>");
-                                $("#output").append("<p>" + "Course Level:   " + element["level"] + "</p>");
-                                $("#output").append("<p>" + "Credit Hours:   " + element["credits"] + "</p>");
-                                $("#output").append("<p>" + "Term ID:   " + element["termid"] + "</p>");
-                                $("#output").append("<p>" + "Course Level:   " + element["level"] + "</p>");
-                                $("#output").append("<p>" + "Course Type:   " + element["scheduletype"] + "</p>");
-                                $("#output").append("<p>" + "Instructor:   " + element["instructor"] + "</p>");
-                                $("#output").append("<p>" + "Location:   " + element["where"] + "</p>");
-                                $("#output").append("<p>" + "Start Time: " + element["start"] + "  " + "     End Time" + element["end"] + "</p>");
 
-                                $("#output").append("<br>");
-                                $("#output").append("<br>");
-                                $("#output").append("<br>");
+                        if (data.length == 0) {
+                                $("#output").append("<p> NO Course were found</p>");
+                        } else {
 
 
+                                data.forEach(element => {
+                                        /*
+                                        for (key in element) {
+                                                $("#output").append("<p>" + key + "-----" + element[key] + "</p>");
+                                        }
+                                        */
+                                        $("#output").append("<p>" + element["description"] + " - " + element["crn"] + " - " + element["subjectid"] + " " + element["num"] + " - " + element["section"] + "</p>");
+                                        $("#output").append("<p>" + "Course Level:   " + element["level"] + "</p>");
+                                        $("#output").append("<p>" + "Credit Hours:   " + element["credits"] + "</p>");
+                                        $("#output").append("<p>" + "Term ID:   " + element["termid"] + "</p>");
+                                        $("#output").append("<p>" + "Course Level:   " + element["level"] + "</p>");
+                                        $("#output").append("<p>" + "Course Type:   " + element["scheduletype"] + "</p>");
+                                        $("#output").append("<p>" + "Instructor:   " + element["instructor"] + "</p>");
+                                        $("#output").append("<p>" + "Location:   " + element["where"] + "</p>");
+                                        $("#output").append("<p>" + "Start Time: " + element["start"] + "  " + "     End Time" + element["end"] + "</p>");
 
-                        });
+                                        $("#output").append("<br>");
+                                        $("#output").append("<br>");
+                                        $("#output").append("<br>");
 
+
+
+                                });
+                        }
                 },
 
                 //reset the page
