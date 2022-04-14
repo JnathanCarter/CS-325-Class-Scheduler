@@ -296,6 +296,7 @@ var Project3 = (function () {
                                         $("#output").append("<p>" + "Instructor:   " + element["instructor"] + "</p>");
                                         $("#output").append("<p>" + "Location:   " + element["where"] + "</p>");
                                         $("#output").append("<p>" + "Start Time: " + element["start"] + "  " + "     End Time" + element["end"] + "</p>");
+                                        $("#output").append("<p>" + "Class Days: " + element["days"] + "</p>");
 
                                         $("#output").append("<br>");
                                         $("#output").append("<br>");
